@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 
 // Instruments
-import Styles from './styles';
+import Styles from './styles.scss';
 import initialState from './todos';
 import Checkbox from 'theme/assets/Checkbox';
 

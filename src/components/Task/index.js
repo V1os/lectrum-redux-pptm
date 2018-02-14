@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import cx from 'classnames';
 
 // Instruments
-import Styles from './styles';
+import Styles from './styles.scss';
 import Checkbox from 'theme/assets/Checkbox';
 import Delete from 'theme/assets/Delete';
 import Edit from 'theme/assets/Edit';
