@@ -3,14 +3,20 @@ import React, { Component } from 'react';
 
 // Instruments
 import Styles from './styles.scss';
-import initialState from './todos';
+//import initialState from './todos';
 import Checkbox from 'theme/assets/Checkbox';
+import Store from 'store';
+import todosActions from 'actions';
 
 // Components
 import Task from 'components/Task';
 
 export default class Scheduler extends Component {
-    state = initialState;
+    //state = Store.getState();
+    constructor () {
+        super();
+        this.state = Store.getState();
+    }
 
     handleSubmit = (event) => event.preventDefault();
 
@@ -36,16 +42,15 @@ export default class Scheduler extends Component {
             }),
         }));
 
-    completeAll = () =>
-        this.setState(({ todos }) => ({
-            todso: todos.map((todo) => {
-                todo.completed = true;
+    completeAll = () => {
+        const { todos } = this.state;
+        const flag = todos.every((todo) => todo.completed);
 
-                return todo;
-            }),
-        }));
+        return this.setState(Store.dispatch(todosActions.allComplete(flag)));
+    };
 
     render () {
+        console.log(this.state);
         const { todos } = this.state;
         const allCompleted = todos.every((todo) => todo.completed);
         const todoList = todos.map(({ id, message, completed, important }) => (
@@ -69,7 +74,10 @@ export default class Scheduler extends Component {
                     </header>
                     <section>
                         <form onSubmit = { this.handleSubmit }>
-                            <input placeholder = 'Описание моей новой задачи' type = 'text' />
+                            <input
+                                placeholder = 'Описание моей новой задачи'
+                                type = 'text'
+                            />
                             <button>Добавить задачу</button>
                         </form>
                         <ul>{todoList}</ul>

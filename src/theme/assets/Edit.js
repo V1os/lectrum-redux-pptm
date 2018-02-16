@@ -21,6 +21,9 @@ class EditIcon extends Component {
     }
 }
 
-export default transform({ viewBoxWidth: 21, viewBoxHeight: 21, width: 19, height: 19 })(
-    EditIcon,
-);
+export default transform({
+    viewBoxWidth:  21,
+    viewBoxHeight: 21,
+    width:         19,
+    height:        19,
+})(EditIcon);

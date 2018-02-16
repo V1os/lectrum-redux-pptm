@@ -21,6 +21,9 @@ class DeleteIcon extends Component {
     }
 }
 
-export default transform({ viewBoxWidth: 53.8, viewBoxHeight: 53.8, width: 17, height: 17 })(
-    DeleteIcon,
-);
+export default transform({
+    viewBoxWidth:  53.8,
+    viewBoxHeight: 53.8,
+    width:         17,
+    height:        17,
+})(DeleteIcon);

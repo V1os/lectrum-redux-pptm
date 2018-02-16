@@ -4,7 +4,7 @@ import { number } from 'prop-types';
 
 const transformSVG = (
     Injectable,
-    { viewBoxWidth = 0, viewBoxHeight = 0, width = 0, height = 0 } = {},
+    { viewBoxWidth = 0, viewBoxHeight = 0, width = 0, height = 0 } = {}
 ) =>
     class SVG extends Component {
         static propTypes = {
@@ -34,7 +34,9 @@ const transformSVG = (
             Object.entries(this.props).forEach(([key, value]) => {
                 if (/^color[\d]$/.test(key)) {
                     if (!(/(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i).test(value)) {
-                        throw new Error(`The HEX color value passed invalid: ${value}`);
+                        throw new Error(
+                            `The HEX color value passed invalid: ${value}`
+                        );
                     }
                 }
             });

@@ -33,4 +33,9 @@ class Checkbox extends Component {
 }
 // <path class="st0" d="M79.2,14.1L65.1,0L29,36L14.1,21.1L0,35.2l29,29.1L79.2,14.1z"/>
 
-export default transform({ viewBoxWidth: 27, viewBoxHeight: 27, width: 25, height: 25 })(Checkbox);
+export default transform({
+    viewBoxWidth:  27,
+    viewBoxHeight: 27,
+    width:         25,
+    height:        25,
+})(Checkbox);

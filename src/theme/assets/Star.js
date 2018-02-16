@@ -28,6 +28,9 @@ class StartIcon extends Component {
     }
 }
 
-export default transform({ viewBoxWidth: 90, viewBoxHeight: 85.8, width: 19, height: 19 })(
-    StartIcon,
-);
+export default transform({
+    viewBoxWidth:  90,
+    viewBoxHeight: 85.8,
+    width:         19,
+    height:        19,
+})(StartIcon);
