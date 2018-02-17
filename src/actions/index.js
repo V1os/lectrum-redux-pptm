@@ -19,22 +19,13 @@ export default Object.freeze({
         type:    types.TODOS_SEARCH_TASK,
         payload: query,
     }),
+    // Tasks action
     changePriority: (id) => ({
         type:    types.TODOS_TASK_CHANGE_PRIORITY,
         payload: id,
     }),
-    updateImportant: (id) => ({
-        type:    types.TODOS_TASK_IMPORTANT,
-        payload: id,
-    }),
     updateComplete: (id) => ({
-        type:    types.TODOS_TASK_IMPORTANT,
+        type:    types.TODOS_TASK_COMPLETE,
         payload: id,
     }),
-
-    /*loginFail: (error) => ({
-        type:    types.LOGIN_FAILED,
-        payload: error,
-        error:   true,
-    }),*/
 });

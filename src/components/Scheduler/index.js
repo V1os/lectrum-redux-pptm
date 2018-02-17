@@ -1,57 +1,46 @@
 // Core
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { toJS } from 'immutable';
 
 // Instruments
 import Styles from './styles.scss';
-//import initialState from './todos';
+
+// import initialState from './todos';
 import Checkbox from 'theme/assets/Checkbox';
-import Store from 'store';
 import todosActions from 'actions';
 
 // Components
 import Task from 'components/Task';
 
-export default class Scheduler extends Component {
+class Scheduler extends Component {
     //state = Store.getState();
-    constructor () {
-        super();
-        this.state = Store.getState();
-    }
 
     handleSubmit = (event) => event.preventDefault();
 
-    complete = (id) =>
-        this.setState(({ todos }) => ({
-            todos: todos.map((todo) => {
-                if (todo.id === id) {
-                    todo.completed = !todo.completed;
-                }
+    complete = (id) => {
+        const { actions } = this.props;
 
-                return todo;
-            }),
-        }));
+        return this.setState(actions.updateComplete(id));
+    };
 
-    changePriority = (id) =>
-        this.setState(({ todos }) => ({
-            todos: todos.map((todo) => {
-                if (todo.id === id) {
-                    todo.important = !todo.important;
-                }
+    changePriority = (id) => {
+        const { actions } = this.props;
 
-                return todo;
-            }),
-        }));
+        return this.setState(actions.changePriority(id));
+    };
 
     completeAll = () => {
-        const { todos } = this.state;
+        const { todos, actions } = this.props;
         const flag = todos.every((todo) => todo.completed);
 
-        return this.setState(Store.dispatch(todosActions.allComplete(flag)));
+        return this.setState(actions.allComplete(flag));
     };
 
     render () {
-        console.log(this.state);
-        const { todos } = this.state;
+        console.log(this.props, this.state);
+        const { todos } = this.props;
         const allCompleted = todos.every((todo) => todo.completed);
         const todoList = todos.map(({ id, message, completed, important }) => (
             <Task
@@ -96,3 +85,15 @@ export default class Scheduler extends Component {
         );
     }
 }
+
+const mapStateToProps = (state) => {
+    console.log(state);
+
+    return { todos: state.get('todos').toJS() };
+};
+
+const mapDispatchToProps = (dispatch) => ({
+    actions: bindActionCreators({ ...todosActions }, dispatch),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Scheduler);

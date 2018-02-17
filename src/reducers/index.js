@@ -1,8 +1,9 @@
 // Instruments
 import types from 'actions/types';
+import { fromJS } from 'immutable';
 import { getUniqueID } from 'helpers';
 
-const initialState = {
+const initialState = fromJS({
     todos: [
         {
             id:        'xjh',
@@ -35,38 +36,50 @@ const initialState = {
             important: false,
         }
     ],
-};
+});
 
 export default (state = initialState, action) => {
     switch (action.type) {
         case types.TODOS_SEARCH_TASK:
-            return state.filter(
-                (task) => task.message.indexOf(action.payload) !== -1
+            return state.find(
+                (task) => task.get('message').indexOf(action.payload) !== -1
             );
 
         case types.TODOS_ADD_TASK:
-            return Object.assign(
-                {
+            return state.update('todos', (todos) => todos.push(
+                /*new Map({
                     id:        getUniqueID(4),
                     completed: false,
                     important: false,
                     message:   action.payload,
-                },
-                state.todos
+                })*/action.payload
+            ));
+
+        case types.TODOS_TASK_CHANGE_PRIORITY:
+            return state.update('todos', (todos) =>
+                todos.map(
+                    (todo) =>
+                        todo.get('id') === action.payload
+                            ? todo.set('important', !todo.get('important'))
+                            : todo
+                )
             );
 
-        case types.TODOS_TASK_IMPORTANT:
-        case types.TODOS_TASK_CHANGE_PRIORITY:
-        case types.TODOS_ALL_COMPLETE: {
-            console.log(this.state);
+        case types.TODOS_ALL_COMPLETE:
+            return state.update('todos', (todos) =>
+                todos.map((todo) => todo.set('completed', !action.payload))
+            );
 
-            return state.todos.map((todo) => {
-                todo.completed = !action.payload;
-
-                return todo;
-            });
-        }
         case types.TODOS_TASK_COMPLETE:
+            return state.update('todos', (todos) =>
+                todos.map(
+                    (todo) =>
+                        todo.get('id') === action.payload
+                            ? todo.set('completed', !todo.get('completed'))
+                            : todo
+                )
+            );
+
         default:
             return state;
     }
