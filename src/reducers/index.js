@@ -1,7 +1,6 @@
 // Instruments
 import types from 'actions/types';
 import { fromJS } from 'immutable';
-import { getUniqueID } from 'helpers';
 
 const initialState = fromJS({
     todos: [
@@ -46,14 +45,8 @@ export default (state = initialState, action) => {
             );
 
         case types.TODOS_ADD_TASK:
-            return state.update('todos', (todos) => todos.push(
-                /*new Map({
-                    id:        getUniqueID(4),
-                    completed: false,
-                    important: false,
-                    message:   action.payload,
-                })*/action.payload
-            ));
+            return state.update('todos', (todos) =>
+                todos.push(fromJS(action.payload)));
 
         case types.TODOS_TASK_CHANGE_PRIORITY:
             return state.update('todos', (todos) =>

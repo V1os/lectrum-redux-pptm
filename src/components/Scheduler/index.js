@@ -2,22 +2,31 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { toJS } from 'immutable';
 
 // Instruments
 import Styles from './styles.scss';
-
-// import initialState from './todos';
 import Checkbox from 'theme/assets/Checkbox';
 import todosActions from 'actions';
+import { getUniqueID } from 'helpers';
 
 // Components
 import Task from 'components/Task';
 
 class Scheduler extends Component {
-    //state = Store.getState();
+    handleSubmit = (event) => {
+        const { actions } = this.props,
+            data = new FormData(event.target);
 
-    handleSubmit = (event) => event.preventDefault();
+        event.preventDefault();
+        const task = {
+            id:        getUniqueID(3),
+            completed: false,
+            important: false,
+            message:   data.get('adder'),
+        };
+
+        this.setState(actions.addTask(task));
+    };
 
     complete = (id) => {
         const { actions } = this.props;
@@ -64,6 +73,8 @@ class Scheduler extends Component {
                     <section>
                         <form onSubmit = { this.handleSubmit }>
                             <input
+                                maxLength = { '46' }
+                                name = { 'adder' }
                                 placeholder = 'Описание моей новой задачи'
                                 type = 'text'
                             />

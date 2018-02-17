@@ -7,9 +7,9 @@ export default Object.freeze({
         type:    types.TODOS_ALL_COMPLETE,
         payload: flag,
     }),
-    addTask: (message) => ({
+    addTask: (task) => ({
         type:    types.TODOS_ADD_TASK,
-        payload: message,
+        payload: task,
     }),
     updateTask: (newMessage) => ({
         type:    types.TODOS_UPDATE_TASK,
