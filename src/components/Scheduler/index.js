@@ -8,6 +8,8 @@ import Styles from './styles.scss';
 import Checkbox from 'theme/assets/Checkbox';
 import todosActions from 'actions';
 import { getUniqueID } from 'helpers';
+import { sortByPriority } from 'selectors/sortByPriiority';
+import { sortByCompleted } from 'selectors/sortByCompleted';
 
 // Components
 import Task from 'components/Task';
@@ -101,11 +103,8 @@ class Scheduler extends Component {
     }
 }
 
-const mapStateToProps = (state) => {
-    console.log(state);
-
-    return { todos: state.get('todos').toJS() };
-};
+//const mapStateToProps = (state) => state.toJS();
+const mapStateToProps = (state) => sortByCompleted(sortByPriority(state));
 
 const mapDispatchToProps = (dispatch) => ({
     actions: bindActionCreators({ ...todosActions }, dispatch),
