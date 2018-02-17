@@ -46,7 +46,8 @@ export default (state = initialState, action) => {
 
         case types.TODOS_ADD_TASK:
             return state.update('todos', (todos) =>
-                todos.push(fromJS(action.payload)));
+                todos.push(fromJS(action.payload))
+            );
 
         case types.TODOS_TASK_CHANGE_PRIORITY:
             return state.update('todos', (todos) =>
@@ -58,11 +59,6 @@ export default (state = initialState, action) => {
                 )
             );
 
-        case types.TODOS_ALL_COMPLETE:
-            return state.update('todos', (todos) =>
-                todos.map((todo) => todo.set('completed', !action.payload))
-            );
-
         case types.TODOS_TASK_COMPLETE:
             return state.update('todos', (todos) =>
                 todos.map(
@@ -71,6 +67,11 @@ export default (state = initialState, action) => {
                             ? todo.set('completed', !todo.get('completed'))
                             : todo
                 )
+            );
+
+        case types.TODOS_ALL_COMPLETE:
+            return state.update('todos', (todos) =>
+                todos.map((todo) => todo.set('completed', !action.payload))
             );
 
         default:

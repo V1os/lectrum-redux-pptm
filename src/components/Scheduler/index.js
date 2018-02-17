@@ -14,18 +14,22 @@ import Task from 'components/Task';
 
 class Scheduler extends Component {
     handleSubmit = (event) => {
-        const { actions } = this.props,
-            data = new FormData(event.target);
-
         event.preventDefault();
-        const task = {
-            id:        getUniqueID(3),
-            completed: false,
-            important: false,
-            message:   data.get('adder'),
-        };
+        const { actions } = this.props;
+        const data = new FormData(event.target);
+        const adder = data.get('adder');
 
-        this.setState(actions.addTask(task));
+        if (adder !== '') {
+            const task = {
+                id:        getUniqueID(3),
+                completed: false,
+                important: false,
+                message:   data.get('adder'),
+            };
+
+            this.setState(actions.addTask(task));
+            event.target.adder.value = '';
+        }
     };
 
     complete = (id) => {
