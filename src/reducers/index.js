@@ -41,9 +41,10 @@ export default (state = initialState, action) => {
     switch (action.type) {
         case types.TODOS_SEARCH_TASK:
             return state.update('todos', (todos) =>
-                todos.filter((task) =>
-                    task.get('message').indexOf(action.payload) !== -1
-                ));
+                todos.filter(
+                    (task) => task.get('message').indexOf(action.payload) !== -1
+                )
+            );
 
         case types.TODOS_ADD_TASK:
             return state.update('todos', (todos) =>
@@ -72,8 +73,8 @@ export default (state = initialState, action) => {
 
         case types.TODOS_TASK_DELETE:
             return state.update('todos', (todos) =>
-                todos.filter((task) =>
-                    task.get('id') !== action.payload));
+                todos.filter((task) => task.get('id') !== action.payload)
+            );
 
         case types.TODOS_ALL_COMPLETE:
             return state.update('todos', (todos) =>

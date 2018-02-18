@@ -69,7 +69,7 @@ class Scheduler extends Component {
         return this.setState(actions.deleteTask(id));
     };
 
-    editTask = (message) => {
+    updateTask = (message) => {
         const { actions } = this.props;
 
         return this.setState(actions.updateTask(message));
@@ -79,6 +79,7 @@ class Scheduler extends Component {
         const { actions } = this.props;
 
         console.log(event.target.value);
+
         return this.setState(actions.searchTask(event.target.value));
     };
 
@@ -91,11 +92,11 @@ class Scheduler extends Component {
                 complete = { this.complete }
                 completed = { completed }
                 deleteTask = { this.deleteTask }
-                editTask = { this.editTask }
                 id = { id }
                 important = { important }
                 key = { id }
                 message = { message }
+                updateTask = { this.updateTask }
             />
         ));
 
@@ -104,7 +105,11 @@ class Scheduler extends Component {
                 <main>
                     <header>
                         <h1>Планировщик задач</h1>
-                        <input placeholder = 'Поиск' type = 'search' onChange = { this.searchBy } />
+                        <input
+                            placeholder = 'Поиск'
+                            type = 'search'
+                            onChange = { this.searchBy }
+                        />
                     </header>
                     <section>
                         <form onSubmit = { this.handleSubmit }>

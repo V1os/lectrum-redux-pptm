@@ -10,6 +10,10 @@ import Edit from 'theme/assets/Edit';
 import Star from 'theme/assets/Star';
 
 export default class Task extends Component {
+    state = {
+        editable: true,
+    };
+
     complete = () => {
         const { id, complete } = this.props;
 
@@ -22,10 +26,12 @@ export default class Task extends Component {
         changePriority(id);
     };
 
-    editTask = (message) => {
-        const { id, editTask } = this.props;
+    editTask = () => {
+        const { completed } = this.props;
 
-        editTask(id, message);
+        if (!completed) {
+            this.setState({ editable: false });
+        }
     };
 
     deleteTask = () => {
@@ -34,8 +40,15 @@ export default class Task extends Component {
         deleteTask(id);
     };
 
+    updateTask = (event) => {
+        const { id, updateTask } = this.props;
+
+        updateTask(id, event.target.value);
+    };
+
     render () {
-        const { completed, important, message } = this.props;
+        const { completed, important, message, id } = this.props;
+        const { editable } = this.state;
 
         const styles = cx(Styles.task, {
             [Styles.completed]: completed,
@@ -50,7 +63,14 @@ export default class Task extends Component {
                         color2 = '#FFF'
                         onClick = { this.complete }
                     />
-                    <code>{message}</code>
+                    <input
+                        maxLength = { 46 }
+                        readOnly = { editable }
+                        size = { 46 }
+                        type = 'text'
+                        value = { message }
+                        // onChange = { this.updateTask }
+                    />
                 </div>
                 <div>
                     <Star
