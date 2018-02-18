@@ -40,13 +40,14 @@ const initialState = fromJS({
 export default (state = initialState, action) => {
     switch (action.type) {
         case types.TODOS_SEARCH_TASK:
-            return state.find(
-                (task) => task.get('message').indexOf(action.payload) !== -1
-            );
+            return state.update('todos', (todos) =>
+                todos.filter((task) =>
+                    task.get('message').indexOf(action.payload) !== -1
+                ));
 
         case types.TODOS_ADD_TASK:
             return state.update('todos', (todos) =>
-                todos.push(fromJS(action.payload))
+                todos.unshift(fromJS(action.payload))
             );
 
         case types.TODOS_TASK_CHANGE_PRIORITY:
@@ -68,6 +69,11 @@ export default (state = initialState, action) => {
                             : todo
                 )
             );
+
+        case types.TODOS_TASK_DELETE:
+            return state.update('todos', (todos) =>
+                todos.filter((task) =>
+                    task.get('id') !== action.payload));
 
         case types.TODOS_ALL_COMPLETE:
             return state.update('todos', (todos) =>

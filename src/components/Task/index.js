@@ -22,6 +22,18 @@ export default class Task extends Component {
         changePriority(id);
     };
 
+    editTask = (message) => {
+        const { id, editTask } = this.props;
+
+        editTask(id, message);
+    };
+
+    deleteTask = () => {
+        const { id, deleteTask } = this.props;
+
+        deleteTask(id);
+    };
+
     render () {
         const { completed, important, message } = this.props;
 
@@ -47,8 +59,16 @@ export default class Task extends Component {
                         color2 = '#000'
                         onClick = { this.changePriority }
                     />
-                    <Edit color1 = '#3B8EF3' color2 = '#000' />
-                    <Delete color1 = '#3B8EF3' color2 = '#000' />
+                    <Edit
+                        color1 = '#3B8EF3'
+                        color2 = '#000'
+                        onClick = { this.editTask }
+                    />
+                    <Delete
+                        color1 = '#3B8EF3'
+                        color2 = '#000'
+                        onClick = { this.deleteTask }
+                    />
                 </div>
             </li>
         );

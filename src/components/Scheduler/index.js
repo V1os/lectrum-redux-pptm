@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+//import { fromJS } from 'immutable';
 
 // Instruments
 import Styles from './styles.scss';
@@ -34,10 +35,19 @@ class Scheduler extends Component {
         }
     };
 
-    complete = (id) => {
+    complete = (id /*, completed*/) => {
         const { actions } = this.props;
 
-        return this.setState(actions.updateComplete(id));
+        this.setState(actions.updateComplete(id));
+
+        /*if (!completed) {
+            console.log(this.props);
+            console.log(sortByCompleted(fromJS(this.props)));
+
+            setTimeout(() => {
+                this.setState(sortByCompleted(fromJS(this.props)));
+            }, 1000);
+        }*/
     };
 
     changePriority = (id) => {
@@ -53,8 +63,26 @@ class Scheduler extends Component {
         return this.setState(actions.allComplete(flag));
     };
 
+    deleteTask = (id) => {
+        const { actions } = this.props;
+
+        return this.setState(actions.deleteTask(id));
+    };
+
+    editTask = (message) => {
+        const { actions } = this.props;
+
+        return this.setState(actions.updateTask(message));
+    };
+
+    searchBy = (event) => {
+        const { actions } = this.props;
+
+        console.log(event.target.value);
+        return this.setState(actions.searchTask(event.target.value));
+    };
+
     render () {
-        console.log(this.props, this.state);
         const { todos } = this.props;
         const allCompleted = todos.every((todo) => todo.completed);
         const todoList = todos.map(({ id, message, completed, important }) => (
@@ -62,6 +90,8 @@ class Scheduler extends Component {
                 changePriority = { this.changePriority }
                 complete = { this.complete }
                 completed = { completed }
+                deleteTask = { this.deleteTask }
+                editTask = { this.editTask }
                 id = { id }
                 important = { important }
                 key = { id }
@@ -74,7 +104,7 @@ class Scheduler extends Component {
                 <main>
                     <header>
                         <h1>Планировщик задач</h1>
-                        <input placeholder = 'Поиск' type = 'search' />
+                        <input placeholder = 'Поиск' type = 'search' onChange = { this.searchBy } />
                     </header>
                     <section>
                         <form onSubmit = { this.handleSubmit }>
@@ -103,7 +133,6 @@ class Scheduler extends Component {
     }
 }
 
-//const mapStateToProps = (state) => state.toJS();
 const mapStateToProps = (state) => sortByCompleted(sortByPriority(state));
 
 const mapDispatchToProps = (dispatch) => ({
