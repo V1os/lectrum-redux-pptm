@@ -15,6 +15,14 @@
     font-size: 2rem;
     font-weight: 400;
 
+    > div {
+        align-items: center;
+        input[readonly] {
+            border: 0;
+            outline: none;
+        }
+    }
+    
     & div span {
         cursor: pointer;
     }
@@ -37,4 +45,8 @@
 .completed {
     background-color: $paletteColor8;
     color: $paletteColor9;
+}
+
+.editLine {
+    outline: 1px dashed $paletteColor3;
 }

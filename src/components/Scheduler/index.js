@@ -69,16 +69,14 @@ class Scheduler extends Component {
         return this.setState(actions.deleteTask(id));
     };
 
-    updateTask = (message) => {
+    updateTask = (id, message) => {
         const { actions } = this.props;
 
-        return this.setState(actions.updateTask(message));
+        return this.setState(actions.updateTask(id, message));
     };
 
     searchBy = (event) => {
         const { actions } = this.props;
-
-        console.log(event.target.value);
 
         return this.setState(actions.searchTask(event.target.value));
     };

@@ -15,9 +15,9 @@ export default Object.freeze({
         type:    types.TODOS_TASK_DELETE,
         payload: id,
     }),
-    updateTask: (newMessage) => ({
+    updateTask: (task) => ({
         type:    types.TODOS_UPDATE_TASK,
-        payload: newMessage,
+        payload: task,
     }),
     searchTask: (query) => ({
         type:    types.TODOS_SEARCH_TASK,

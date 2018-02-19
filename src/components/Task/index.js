@@ -10,9 +10,20 @@ import Edit from 'theme/assets/Edit';
 import Star from 'theme/assets/Star';
 
 export default class Task extends Component {
-    state = {
-        editable: true,
-    };
+    constructor () {
+        super();
+        this.state = {
+            readOnly: true,
+            value:    '',
+        };
+        this.checkInUpdate = ::this._checkInUpdate;
+    }
+
+    componentWillMount () {
+        const { message } = this.props;
+
+        this.setState({ value: message, readOnly: true });
+    }
 
     complete = () => {
         const { id, complete } = this.props;
@@ -26,29 +37,42 @@ export default class Task extends Component {
         changePriority(id);
     };
 
-    editTask = () => {
-        const { completed } = this.props;
-
-        if (!completed) {
-            this.setState({ editable: false });
-        }
-    };
-
     deleteTask = () => {
         const { id, deleteTask } = this.props;
 
         deleteTask(id);
     };
 
-    updateTask = (event) => {
-        const { id, updateTask } = this.props;
+    editTask = () => {
+        const { completed } = this.props;
+        const { value } = this.state;
 
-        updateTask(id, event.target.value);
+        if (!completed) {
+            this.setState({ value, readOnly: false });
+        }
     };
 
+    _checkInUpdate (event) {
+        const { value, readOnly } = this.state;
+
+        if (event.key === 'Enter' && !readOnly) {
+            const { id, updateTask, message } = this.props;
+
+            if (value === '') {
+                this.setState({ value: message, readOnly: false });
+            } else {
+                updateTask({ id, message: value });
+                this.setState({ value, readOnly: true });
+            }
+        }
+    }
+
+    changeTask = (event) =>
+        this.setState({ value: event.target.value, readOnly: false });
+
     render () {
-        const { completed, important, message, id } = this.props;
-        const { editable } = this.state;
+        const { completed, important } = this.props;
+        const { readOnly, value: valueInput } = this.state;
 
         const styles = cx(Styles.task, {
             [Styles.completed]: completed,
@@ -65,11 +89,12 @@ export default class Task extends Component {
                     />
                     <input
                         maxLength = { 46 }
-                        readOnly = { editable }
+                        readOnly = { readOnly }
                         size = { 46 }
                         type = 'text'
-                        value = { message }
-                        // onChange = { this.updateTask }
+                        value = { valueInput }
+                        onChange = { this.changeTask }
+                        onKeyPress = { this.checkInUpdate }
                     />
                 </div>
                 <div>

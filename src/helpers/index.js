@@ -29,6 +29,8 @@ export const sortTaskByAZ = (list, name) => {
             if (taskPrev.get(name) === taskNext.get(name)) {
                 return 0;
             }
+
+            return 0;
         });
     }
 
@@ -49,6 +51,8 @@ export const sortTaskByZA = (list, name) => {
             if (taskPrev.get(name) === taskNext.get(name)) {
                 return 0;
             }
+
+            return 0;
         });
     }
 

@@ -70,6 +70,16 @@ export default (state = initialState, action) => {
                             : todo
                 )
             );
+        case types.TODOS_UPDATE_TASK:
+            return state.update('todos', (todos) =>
+                todos.map((task) => {
+                    if (task.get('id') === action.payload.id) {
+                        return task.set('message', action.payload.message);
+                    }
+
+                    return task;
+                })
+            );
 
         case types.TODOS_TASK_DELETE:
             return state.update('todos', (todos) =>
