@@ -16,18 +16,26 @@ import { sortByCompleted } from 'selectors/sortByCompleted';
 import Task from 'components/Task';
 
 class Scheduler extends Component {
+    constructor () {
+        super();
+        this.state = { stateSave: {}};
+    }
+
+    componentWillMount () {
+        this.setState({ stateSave: this.props });
+    }
+
     handleSubmit = (event) => {
         event.preventDefault();
         const { actions } = this.props;
-        const data = new FormData(event.target);
-        const adder = data.get('adder');
+        const adder = event.target.adder.value;
 
         if (adder !== '') {
             const task = {
                 id:        getUniqueID(3),
                 completed: false,
                 important: false,
-                message:   data.get('adder'),
+                message:   adder,
             };
 
             this.setState(actions.addTask(task));
@@ -35,19 +43,10 @@ class Scheduler extends Component {
         }
     };
 
-    complete = (id /*, completed*/) => {
+    complete = (id) => {
         const { actions } = this.props;
 
         this.setState(actions.updateComplete(id));
-
-        /*if (!completed) {
-            console.log(this.props);
-            console.log(sortByCompleted(fromJS(this.props)));
-
-            setTimeout(() => {
-                this.setState(sortByCompleted(fromJS(this.props)));
-            }, 1000);
-        }*/
     };
 
     changePriority = (id) => {
@@ -77,6 +76,11 @@ class Scheduler extends Component {
 
     searchBy = (event) => {
         const { actions } = this.props;
+        const { stateSave } = this.state;
+
+        // reset to init
+        this.setState(stateSave);
+        console.log(this.props.todos);
 
         return this.setState(actions.searchTask(event.target.value));
     };
