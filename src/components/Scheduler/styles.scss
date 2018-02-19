@@ -123,3 +123,8 @@
         }
     }
 }
+
+.reorder-wrapper-item {
+    position: relative;
+    transition: top 1s ease-in;
+}

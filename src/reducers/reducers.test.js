@@ -11,12 +11,14 @@ const task = {
     important: false,
 };
 const stateSearch = fromJS({
-    todos: [{
-        id:        'xjh',
-        message:   'Успешно пройти React-интенсив компании Lectrum',
-        completed: true,
-        important: true,
-    }],
+    todos: [
+        {
+            id:        'xjh',
+            message:   'Успешно пройти React-интенсив компании Lectrum',
+            completed: true,
+            important: true,
+        }
+    ],
 });
 const stateAdd = initialState.update('todos', (todos) =>
     todos.unshift(fromJS(task))
@@ -122,10 +124,13 @@ describe('Reducers', () => {
 
     test('reset reducer', () => {
         expect(
-            reducers({}, {
-                type:    'TODOS_RESET',
-                payload: initialState,
-            })
+            reducers(
+                {},
+                {
+                    type:    'TODOS_RESET',
+                    payload: initialState,
+                }
+            )
         ).toEqual(initialState);
     });
 

@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { fromJS } from 'immutable';
+import FlipMove from 'react-flip-move';
 
 // Instruments
 import Styles from './styles.scss';
@@ -93,6 +94,7 @@ class Scheduler extends Component {
         const todoList = todos.map(({ id, message, completed, important }) => (
             <Task
                 changePriority = { this.changePriority }
+                className = 'tile'
                 complete = { this.complete }
                 completed = { completed }
                 deleteTask = { this.deleteTask }
@@ -125,7 +127,14 @@ class Scheduler extends Component {
                             />
                             <button>Добавить задачу</button>
                         </form>
-                        <ul>{todoList}</ul>
+                        <FlipMove
+                            duration = { 500 }
+                            easing = 'ease-out'
+                            enterAnimation = 'fade'
+                            leaveAnimation = 'fade'
+                            typeName = 'ul'>
+                            {todoList}
+                        </FlipMove>
                     </section>
                     <footer>
                         <Checkbox
