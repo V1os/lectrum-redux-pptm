@@ -32,4 +32,8 @@ export default Object.freeze({
         type:    types.TODOS_TASK_COMPLETE,
         payload: id,
     }),
+    resetList: (state) => ({
+        type:    types.TODOS_RESET,
+        payload: state,
+    }),
 });

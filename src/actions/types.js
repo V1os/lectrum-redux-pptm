@@ -6,4 +6,5 @@ export default Object.freeze({
     TODOS_TASK_COMPLETE:        'TODOS_TASK_COMPLETE',
     TODOS_TASK_DELETE:          'TODOS_TASK_DELETE',
     TODOS_TASK_CHANGE_PRIORITY: 'TODOS_TASK_CHANGE_PRIORITY',
+    TODOS_RESET:                'TODOS_RESET',
 });

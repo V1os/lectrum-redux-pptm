@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-//import { fromJS } from 'immutable';
+import { fromJS } from 'immutable';
 
 // Instruments
 import Styles from './styles.scss';
@@ -22,7 +22,9 @@ class Scheduler extends Component {
     }
 
     componentWillMount () {
-        this.setState({ stateSave: this.props });
+        const stateSave = fromJS(this.props);
+
+        this.setState({ stateSave });
     }
 
     handleSubmit = (event) => {
@@ -78,9 +80,9 @@ class Scheduler extends Component {
         const { actions } = this.props;
         const { stateSave } = this.state;
 
+        console.log(stateSave);
         // reset to init
-        this.setState(stateSave);
-        console.log(this.props.todos);
+        this.setState(actions.resetList(stateSave));
 
         return this.setState(actions.searchTask(event.target.value));
     };

@@ -90,7 +90,8 @@ export default (state = initialState, action) => {
             return state.update('todos', (todos) =>
                 todos.map((todo) => todo.set('completed', !action.payload))
             );
-
+        case types.TODOS_RESET:
+            return action.payload;
         default:
             return state;
     }
