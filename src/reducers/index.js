@@ -70,6 +70,7 @@ export default (state = initialState, action) => {
                             : todo
                 )
             );
+
         case types.TODOS_UPDATE_TASK:
             return state.update('todos', (todos) =>
                 todos.map((task) => {
