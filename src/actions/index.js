@@ -3,37 +3,93 @@ import types from './types';
 
 export default Object.freeze({
     // Todos
-    allComplete: (flag) => ({
-        type:    types.TODOS_ALL_COMPLETE,
-        payload: flag,
+    allComplete: (params) => ({
+        type:    types.ALL_COMPLETE,
+        payload: params,
     }),
-    addTask: (task) => ({
-        type:    types.TODOS_ADD_TASK,
-        payload: task,
+    allCompleteSuccess: (tasks) => ({
+        type:    types.ALL_COMPLETE_SUCCESS,
+        payload: tasks,
     }),
-    deleteTask: (id) => ({
-        type:    types.TODOS_TASK_DELETE,
-        payload: id,
-    }),
-    updateTask: (task) => ({
-        type:    types.TODOS_UPDATE_TASK,
-        payload: task,
-    }),
+
     searchTask: (query) => ({
         type:    types.TODOS_SEARCH_TASK,
         payload: query,
     }),
     // Tasks action
-    changePriority: (id) => ({
-        type:    types.TODOS_TASK_CHANGE_PRIORITY,
+    changePriority: (todo) => ({
+        type:    types.CHANGE_PRIORITY,
+        payload: todo,
+    }),
+    changePrioritySuccess: (id) => ({
+        type:    types.CHANGE_PRIORITY_SUCCESS,
         payload: id,
     }),
-    updateComplete: (id) => ({
-        type:    types.TODOS_TASK_COMPLETE,
+    completeTask: (todo) => ({
+        type:    types.COMPLETE_TASK,
+        payload: todo,
+    }),
+    completeTaskSuccess: (id) => ({
+        type:    types.COMPLETE_TASK_SUCCESS,
         payload: id,
     }),
     resetList: (state) => ({
         type:    types.TODOS_RESET,
         payload: state,
+    }),
+
+    readTask: () => ({
+        type: types.READ_TASK,
+    }),
+    readTaskSuccess: (data) => ({
+        type:    types.READ_TASK_SUCCESS,
+        payload: data,
+    }),
+    readTaskFail: (message) => ({
+        type:    types.READ_TASK_FAIL,
+        payload: message,
+        error:   true,
+    }),
+
+    createTask: (message) => ({
+        type:    types.CREATE_TASK,
+        payload: message,
+    }),
+    createTaskSuccess: (task) => ({
+        type:    types.CREATE_TASK_SUCCESS,
+        payload: task,
+    }),
+    createTaskFail: (message) => ({
+        type:    types.CREATE_TASK_FAIL,
+        payload: message,
+        error:   true,
+    }),
+
+    updateTask: (tasks) => ({
+        type:    types.UPDATE_TASK,
+        payload: tasks,
+    }),
+    updateTaskSuccess: (task) => ({
+        type:    types.UPDATE_TASK_SUCCESS,
+        payload: task,
+    }),
+    updateTaskFail: (message) => ({
+        type:    types.UPDATE_TASK_FAIL,
+        payload: message,
+        error:   true,
+    }),
+
+    deleteTask: (id) => ({
+        type:    types.DELETE_TASK,
+        payload: id,
+    }),
+    deleteTaskSuccess: (id) => ({
+        type:    types.DELETE_TASK_SUCCESS,
+        payload: id,
+    }),
+    deleteTaskFail: (message) => ({
+        type:    types.DELETE_TASK_FAIL,
+        payload: message,
+        error:   true,
     }),
 });

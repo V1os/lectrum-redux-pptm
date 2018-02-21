@@ -4,5 +4,5 @@ import { sortTaskByAZ } from 'helpers';
 
 export const sortByPriority = createSelector(
     (state) => state,
-    (state) => state.update('todos', (todos) => sortTaskByAZ(todos, 'important'))
+    (state) => state.update('todos', (todos) => sortTaskByAZ(todos, 'favorite'))
 );

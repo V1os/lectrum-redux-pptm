@@ -9,7 +9,6 @@ import FlipMove from 'react-flip-move';
 import Styles from './styles.scss';
 import Checkbox from 'theme/assets/Checkbox';
 import todosActions from 'actions';
-import { getUniqueID } from 'helpers';
 import { sortByPriority } from 'selectors/sortByPriiority';
 import { sortByCompleted } from 'selectors/sortByCompleted';
 
@@ -23,9 +22,15 @@ class Scheduler extends Component {
     }
 
     componentWillMount () {
-        const stateSave = fromJS(this.props);
+        const { actions } = this.props;
 
-        this.setState({ stateSave });
+        actions.readTask();
+        const t = setTimeout(() => {
+            const stateSave = fromJS(this.props);
+
+            this.setState({ stateSave });
+            clearTimeout(t);
+        }, 1000);
     }
 
     handleSubmit = (event) => {
@@ -34,35 +39,44 @@ class Scheduler extends Component {
         const adder = event.target.adder.value;
 
         if (adder !== '') {
-            const task = {
-                id:        getUniqueID(3),
-                completed: false,
-                important: false,
-                message:   adder,
-            };
-
-            this.setState(actions.addTask(task));
+            actions.createTask(adder);
             event.target.adder.value = '';
         }
     };
 
-    complete = (id) => {
-        const { actions } = this.props;
-
-        this.setState(actions.updateComplete(id));
-    };
-
     changePriority = (id) => {
-        const { actions } = this.props;
+        const { todos, actions } = this.props;
+        const todo = fromJS(todos).filter((task) => task.get('id') === id);
+        const todoUpdate = todo.setIn([0, 'favorite'], !todo.get('favorite'));
 
-        return this.setState(actions.changePriority(id));
+        return this.setState(actions.changePriority(todoUpdate));
     };
 
     completeAll = () => {
         const { todos, actions } = this.props;
         const flag = todos.every((todo) => todo.completed);
 
-        return this.setState(actions.allComplete(flag));
+        return this.setState(
+            actions.allComplete({ flag, todos: fromJS(todos) })
+        );
+    };
+
+    completeTask = (id) => {
+        const { todos, actions } = this.props;
+        const todo = fromJS(todos).filter((task) => task.get('id') === id);
+        const todoUpdate = todo.setIn([0, 'completed'], !todo.get('completed'));
+
+        this.setState(actions.completeTask(todoUpdate));
+    };
+
+    searchBy = (event) => {
+        const { actions } = this.props;
+        const { stateSave } = this.state;
+
+        // reset to init
+        this.setState(actions.resetList(stateSave));
+
+        return this.setState(actions.searchTask(event.target.value));
     };
 
     deleteTask = (id) => {
@@ -72,39 +86,36 @@ class Scheduler extends Component {
     };
 
     updateTask = (task) => {
-        const { actions } = this.props;
+        const { actions, todos } = this.props;
+        const todoFilter = fromJS(todos).filter(
+            (todo) => todo.get('id') === task.id
+        );
+        const taskToUpdate = todoFilter.map((todo) =>
+            todo.set('message', task.message)
+        );
 
-        return this.setState(actions.updateTask(task));
-    };
-
-    searchBy = (event) => {
-        const { actions } = this.props;
-        const { stateSave } = this.state;
-
-        console.log(stateSave);
-        // reset to init
-        this.setState(actions.resetList(stateSave));
-
-        return this.setState(actions.searchTask(event.target.value));
+        return this.setState(actions.updateTask(taskToUpdate));
     };
 
     render () {
         const { todos } = this.props;
         const allCompleted = todos.every((todo) => todo.completed);
-        const todoList = todos.map(({ id, message, completed, important }) => (
-            <Task
-                changePriority = { this.changePriority }
-                className = 'tile'
-                complete = { this.complete }
-                completed = { completed }
-                deleteTask = { this.deleteTask }
-                id = { id }
-                important = { important }
-                key = { id }
-                message = { message }
-                updateTask = { this.updateTask }
-            />
-        ));
+        const todoList = todos.map(
+            ({ id, message, completed, favorite: important }) => (
+                <Task
+                    changePriority = { this.changePriority }
+                    className = 'tile'
+                    complete = { this.completeTask }
+                    completed = { completed }
+                    deleteTask = { this.deleteTask }
+                    id = { id }
+                    important = { important }
+                    key = { id }
+                    message = { message }
+                    updateTask = { this.updateTask }
+                />
+            )
+        );
 
         return (
             <section className = { Styles.scheduler }>
@@ -128,10 +139,13 @@ class Scheduler extends Component {
                             <button>Добавить задачу</button>
                         </form>
                         <FlipMove
+                            maintainContainerHeight
                             duration = { 500 }
                             easing = 'ease-out'
                             enterAnimation = 'fade'
                             leaveAnimation = 'fade'
+                            staggerDelayBy = { 20 }
+                            staggerDurationBy = { 20 }
                             typeName = 'ul'>
                             {todoList}
                         </FlipMove>

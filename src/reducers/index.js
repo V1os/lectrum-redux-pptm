@@ -2,40 +2,7 @@
 import types from 'actions/types';
 import { fromJS } from 'immutable';
 
-const initialState = fromJS({
-    todos: [
-        {
-            id:        'xjh',
-            message:   'Успешно пройти React-интенсив компании Lectrum',
-            completed: true,
-            important: true,
-        },
-        {
-            id:        'xjr',
-            message:   'Взять автограф у Джареда Лето',
-            completed: false,
-            important: false,
-        },
-        {
-            id:        'xrh',
-            message:   'Зарегестрировать бабушку в Твиче',
-            completed: false,
-            important: false,
-        },
-        {
-            id:        'rjh',
-            message:   'Записать собаку на груминг',
-            completed: false,
-            important: false,
-        },
-        {
-            id:        'xph',
-            message:   'Научиться играть на барабанах',
-            completed: false,
-            important: false,
-        }
-    ],
-});
+const initialState = fromJS({ todos: []});
 
 export default (state = initialState, action) => {
     switch (action.type) {
@@ -46,22 +13,17 @@ export default (state = initialState, action) => {
                 )
             );
 
-        case types.TODOS_ADD_TASK:
-            return state.update('todos', (todos) =>
-                todos.unshift(fromJS(action.payload))
-            );
-
-        case types.TODOS_TASK_CHANGE_PRIORITY:
+        case types.CHANGE_PRIORITY_SUCCESS:
             return state.update('todos', (todos) =>
                 todos.map(
                     (todo) =>
                         todo.get('id') === action.payload
-                            ? todo.set('important', !todo.get('important'))
+                            ? todo.set('favorite', !todo.get('favorite'))
                             : todo
                 )
             );
 
-        case types.TODOS_TASK_COMPLETE:
+        case types.COMPLETE_TASK_SUCCESS:
             return state.update('todos', (todos) =>
                 todos.map(
                     (todo) =>
@@ -71,7 +33,14 @@ export default (state = initialState, action) => {
                 )
             );
 
-        case types.TODOS_UPDATE_TASK:
+        case types.ALL_COMPLETE_SUCCESS:
+        case types.TODOS_RESET:
+            return action.payload;
+
+        case types.READ_TASK_SUCCESS:
+            return fromJS(action.payload);
+
+        case types.UPDATE_TASK_SUCCESS:
             return state.update('todos', (todos) =>
                 todos.map((task) => {
                     if (task.get('id') === action.payload.id) {
@@ -82,17 +51,16 @@ export default (state = initialState, action) => {
                 })
             );
 
-        case types.TODOS_TASK_DELETE:
+        case types.DELETE_TASK_SUCCESS:
             return state.update('todos', (todos) =>
                 todos.filter((task) => task.get('id') !== action.payload)
             );
 
-        case types.TODOS_ALL_COMPLETE:
+        case types.CREATE_TASK_SUCCESS:
             return state.update('todos', (todos) =>
-                todos.map((todo) => todo.set('completed', !action.payload))
+                todos.unshift(fromJS(action.payload))
             );
-        case types.TODOS_RESET:
-            return action.payload;
+
         default:
             return state;
     }
