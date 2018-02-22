@@ -8,7 +8,7 @@ const task = {
     id:        'hjx',
     message:   'test',
     completed: false,
-    important: false,
+    favorite:  false,
 };
 const stateSearch = fromJS({
     todos: [
@@ -16,7 +16,7 @@ const stateSearch = fromJS({
             id:        'xjh',
             message:   'Успешно пройти React-интенсив компании Lectrum',
             completed: true,
-            important: true,
+            favorite:  true,
         }
     ],
 });
@@ -27,7 +27,7 @@ const stateChangePriority = initialState.update('todos', (todos) =>
     todos.map(
         (todo) =>
             todo.get('id') === 'xjh'
-                ? todo.set('important', !todo.get('important'))
+                ? todo.set('favorite', !todo.get('favorite'))
                 : todo
     )
 );
@@ -54,10 +54,6 @@ const stateTaskDelete = initialState.update('todos', (todos) =>
     todos.filter((todo) => todo.get('id') !== 'xjh')
 );
 
-const stateAllComplete = initialState.update('todos', (todos) =>
-    todos.map((todo) => todo.set('completed', false))
-);
-
 describe('Reducers', () => {
     test('search task reducer', () => {
         expect(
@@ -68,37 +64,37 @@ describe('Reducers', () => {
         ).toEqual(stateSearch);
     });
 
-    test('add task reducer', () => {
+    test('create task successful reducer', () => {
         expect(
             reducers(initialState, {
-                type:    'TODOS_ADD_TASK',
+                type:    'CREATE_TASK_SUCCESS',
                 payload: task,
             })
         ).toEqual(stateAdd);
     });
 
-    test('change priority reducer', () => {
+    test('change priority success reducer', () => {
         expect(
             reducers(initialState, {
-                type:    'TODOS_TASK_CHANGE_PRIORITY',
+                type:    'CHANGE_PRIORITY_SUCCESS',
                 payload: 'xjh',
             })
         ).toEqual(stateChangePriority);
     });
 
-    test('task complete reducer', () => {
+    test('complete task success reducer', () => {
         expect(
             reducers(initialState, {
-                type:    'TODOS_TASK_COMPLETE',
+                type:    'COMPLETE_TASK_SUCCESS',
                 payload: 'xjh',
             })
         ).toEqual(stateTaskComplete);
     });
 
-    test('update task reducer', () => {
+    test('update task success reducer', () => {
         expect(
             reducers(initialState, {
-                type:    'TODOS_UPDATE_TASK',
+                type:    'UPDATE_TASK_SUCCESS',
                 payload: { id: 'xjh', message: 'new test task' },
             })
         ).toEqual(stateTaskUpdate);
@@ -107,19 +103,28 @@ describe('Reducers', () => {
     test('delete task reducer', () => {
         expect(
             reducers(initialState, {
-                type:    'TODOS_TASK_DELETE',
+                type:    'DELETE_TASK_SUCCESS',
                 payload: 'xjh',
             })
         ).toEqual(stateTaskDelete);
     });
 
-    test('all complete reducer', () => {
+    test('all complete success reducer', () => {
         expect(
             reducers(initialState, {
-                type:    'TODOS_ALL_COMPLETE',
-                payload: true,
+                type:    'ALL_COMPLETE_SUCCESS',
+                payload: initialState,
             })
-        ).toEqual(stateAllComplete);
+        ).toEqual(initialState);
+    });
+
+    test('read task success success reducer', () => {
+        expect(
+            reducers(initialState, {
+                type:    'READ_TASK_SUCCESS',
+                payload: [{}],
+            })
+        ).toEqual(fromJS([{}]));
     });
 
     test('reset reducer', () => {
@@ -139,6 +144,8 @@ describe('Reducers', () => {
     });
 
     test('default reducer by init state', () => {
-        expect(reducers(undefined, { type: '___' })).toEqual(initialState);
+        expect(reducers(undefined, { type: '___' })).toEqual(
+            fromJS({ todos: []})
+        );
     });
 });

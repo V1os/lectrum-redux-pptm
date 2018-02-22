@@ -16,7 +16,9 @@ export function* deleteWorker ({ payload: id }) {
         let message = '';
 
         try {
-            message = yield call([response, response.json]);
+            const { message: mess } = yield call([response, response.json]);
+
+            message = mess;
         } catch (errorParseJSONEmptyLine) {
             message = errorParseJSONEmptyLine.message;
         }

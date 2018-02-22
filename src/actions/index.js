@@ -2,7 +2,6 @@
 import types from './types';
 
 export default Object.freeze({
-    // Todos
     allComplete: (params) => ({
         type:    types.ALL_COMPLETE,
         payload: params,
@@ -11,12 +10,15 @@ export default Object.freeze({
         type:    types.ALL_COMPLETE_SUCCESS,
         payload: tasks,
     }),
-
     searchTask: (query) => ({
         type:    types.TODOS_SEARCH_TASK,
         payload: query,
     }),
-    // Tasks action
+    resetList: (state) => ({
+        type:    types.TODOS_RESET,
+        payload: state,
+    }),
+
     changePriority: (todo) => ({
         type:    types.CHANGE_PRIORITY,
         payload: todo,
@@ -25,6 +27,7 @@ export default Object.freeze({
         type:    types.CHANGE_PRIORITY_SUCCESS,
         payload: id,
     }),
+
     completeTask: (todo) => ({
         type:    types.COMPLETE_TASK,
         payload: todo,
@@ -32,10 +35,6 @@ export default Object.freeze({
     completeTaskSuccess: (id) => ({
         type:    types.COMPLETE_TASK_SUCCESS,
         payload: id,
-    }),
-    resetList: (state) => ({
-        type:    types.TODOS_RESET,
-        payload: state,
     }),
 
     readTask: () => ({

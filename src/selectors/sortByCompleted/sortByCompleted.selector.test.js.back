@@ -1,0 +1,25 @@
+// Instruments
+import sortByCompletedSelector from './';
+import { fromJS } from 'immutable';
+
+const todosNotSort = {
+    todos: [
+        { id: 'test', complete: true },
+        { id: 'test2', complete: false },
+        { id: 'test3', complete: true }
+    ],
+};
+
+const todosSort = {
+    todos: [
+        { id: 'test2', complete: false },
+        { id: 'test', complete: true },
+        { id: 'test3', complete: true }
+    ],
+};
+
+describe('sortByCompleted selector: ', () => {
+    test(`run`, () => {
+        expect(sortByCompletedSelector(fromJS(todosNotSort))).toEqual(todosSort);
+    });
+});
